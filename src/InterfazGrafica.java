@@ -65,7 +65,11 @@ public class InterfazGrafica {
         tarjetaPanel.add(new JLabel()); // Espacio vacío
         tarjetaPanel.add(iniciarButton);
 
-        // Panel central para ingresar compras
+        // Panel central combinado para compras y tabla
+        JPanel centerPanel = new JPanel(new BorderLayout(10, 10));
+        centerPanel.setBackground(new Color(245, 245, 245));
+
+        // Subpanel para ingresar compras
         JPanel comprasPanel = new JPanel(new GridLayout(3, 2, 10, 10));
         comprasPanel.setBackground(new Color(245, 245, 245));
         comprasPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -96,6 +100,18 @@ public class InterfazGrafica {
             valorField.setText(String.format("%.2f", primerProducto.getPrecio()));
         }
 
+        // Tabla para mostrar las compras
+        String[] columnas = {"Fecha", "Descripción", "Valor"};
+        tableModel = new DefaultTableModel(columnas, 0);
+        comprasTable = new JTable(tableModel);
+        comprasTable.setRowHeight(25);
+        comprasTable.setGridColor(new Color(200, 200, 200));
+        JScrollPane tableScrollPane = new JScrollPane(comprasTable);
+
+        // Añadir subpaneles al panel central
+        centerPanel.add(comprasPanel, BorderLayout.NORTH);
+        centerPanel.add(tableScrollPane, BorderLayout.CENTER);
+
         // Panel inferior para el saldo, pagos y botones adicionales
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         bottomPanel.setBackground(new Color(245, 245, 245));
@@ -122,18 +138,9 @@ public class InterfazGrafica {
         bottomPanel.add(pagarField);
         bottomPanel.add(pagarButton);
 
-        // Tabla para mostrar las compras
-        String[] columnas = {"Fecha", "Descripción", "Valor"};
-        tableModel = new DefaultTableModel(columnas, 0);
-        comprasTable = new JTable(tableModel);
-        comprasTable.setRowHeight(25);
-        comprasTable.setGridColor(new Color(200, 200, 200));
-        JScrollPane tableScrollPane = new JScrollPane(comprasTable);
-
         // Añadir componentes al frame
         frame.add(tarjetaPanel, BorderLayout.NORTH);
-        frame.add(comprasPanel, BorderLayout.CENTER);
-        frame.add(tableScrollPane, BorderLayout.CENTER);
+        frame.add(centerPanel, BorderLayout.CENTER);
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
         // Acciones de los botones
